@@ -1,5 +1,6 @@
 import { createStore } from 'redux';
 import ContactList from './mock';
+import { loadState, saveState } from './localStorage';
 
 const ADD = 'ADD';
 export const addContact = contact => ({
@@ -14,16 +15,11 @@ export const deleteContact = name => ({
 });
 
 const CORRECT = 'CORRECT';
-export const correctContact = (index, contact) => {
-  console.log(contact);
-  console.log(index);
-
-  return {
-    type: CORRECT,
-    contact,
-    index: +index,
-  };
-};
+export const correctContact = (index, contact) => ({
+  type: CORRECT,
+  contact,
+  index: +index,
+});
 
 const contactReducer = (state = ContactList(), action) => {
   switch (action.type) {
@@ -34,9 +30,6 @@ const contactReducer = (state = ContactList(), action) => {
       return [...state].filter(el => el.name !== action.payload);
 
     case CORRECT:
-      console.log(state.filter(el => el !== state.splice(action.index, 1, action.contact)));
-      console.log(action);
-
       return [...state].filter(el => el !== state.splice(action.index, 1, action.contact));
 
     default:
@@ -44,4 +37,10 @@ const contactReducer = (state = ContactList(), action) => {
   }
 };
 
-export const store = createStore(contactReducer);
+const persistedStore = loadState();
+
+export const store = createStore(contactReducer, persistedStore);
+
+store.subscribe(() => {
+  saveState(store.getState());
+});

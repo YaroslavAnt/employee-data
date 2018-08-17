@@ -1,6 +1,6 @@
 export default function ContactList() {
   const users = [];
-  for (let index = 0; index < 10; index++) {
+  for (let index = 0; index < 26; index++) {
     users.push({
       name: `Deontae Dare${index}`,
       dateOfBirth: `200${index}-${index}-${index}`,

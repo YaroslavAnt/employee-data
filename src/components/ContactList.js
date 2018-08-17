@@ -6,6 +6,7 @@ import './ContactList.css';
 import SearchBar from './SearchBar';
 import { deleteContact } from '../redux/configureReducer';
 import ModalWindowCorrect from './ModalWindowCorrect';
+import PaginationComponent from './PaginationComponent';
 
 class ContactList extends Component {
   constructor(props) {
@@ -14,11 +15,14 @@ class ContactList extends Component {
       searchVal: '',
       show: false,
       indexVal: null,
+      currentPage: 1,
+      countOfItems: 5,
     };
     this.displayContacts = this.displayContacts.bind(this);
     this.handleClickDelete = this.handleClickDelete.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleHide = this.handleHide.bind(this);
+    this.handleChangePage = this.handleChangePage.bind(this);
   }
 
   displayContacts(input) {
@@ -46,9 +50,17 @@ class ContactList extends Component {
     });
   }
 
+  handleChangePage(currentPage) {    
+    this.setState({
+      currentPage,
+    });
+  }
+
   render() {
     const { contacts } = this.props;
-    const { searchVal, show, indexVal } = this.state;
+    const { 
+      searchVal, show, indexVal, currentPage, countOfItems, 
+    } = this.state;
     return (
       <div className="container">
         <SearchBar onChangeInput={this.displayContacts} />
@@ -66,6 +78,7 @@ class ContactList extends Component {
           <tbody>
             {contacts
               .filter(el => (searchVal ? el.name.indexOf(searchVal) !== -1 : el))
+              .slice((currentPage - 1) * countOfItems, (currentPage - 1) * countOfItems + countOfItems)
               .map((contact, index) => (
                 <tr key={contact.name}>
                   <td>{index + 1}</td>
@@ -86,6 +99,7 @@ class ContactList extends Component {
           </tbody>
         </Table>
         <ModalWindowCorrect onHide={this.handleHide} visible={show} indexval={indexVal} />
+        <PaginationComponent onChangePage={this.handleChangePage} currentPage={currentPage} countOfItems={countOfItems} />
       </div>
     );
   }
