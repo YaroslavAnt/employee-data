@@ -11,13 +11,15 @@ import { correctContact } from '../redux/configureReducer';
 class InputFormCorrect extends Component {
   constructor(props) {
     super(props);
-    const { indexval } = this.props;
+    const { indexval, contacts } = this.props;
+    console.log(contacts);
+    
     this.state = {
       contact: {
-        name: 'a',
+        name: contacts[indexval].name,
         dateOfBirth: '',
-        vacation: 'a',
-        salary: 5,
+        vacation: contacts[indexval].vacation,
+        salary: contacts[indexval].salary,
       },
       indexval,
     };
@@ -41,12 +43,8 @@ class InputFormCorrect extends Component {
     return 'success';
   }
 
-  getValidationVacation() {
-    console.log(this.state);
-    
-    const { contact: { vacation } } = this.state;
-    console.log(vacation);
-    
+  getValidationVacation() {    
+    const { contact: { vacation } } = this.state;    
     if (/[^a-z]/gi.test(vacation) || vacation.length === 0) return 'error';
     return 'success';
   }
@@ -62,7 +60,6 @@ class InputFormCorrect extends Component {
     this.setState({  
       contact: { ...contact, [event.target.name]: event.target.value },
     });   
-    console.log(this.state);    
   }
  
   handleClick(event) {    
@@ -119,7 +116,7 @@ class InputFormCorrect extends Component {
 
         <FormGroup>
           <Col smOffset={2} sm={10}>
-            <Button onClick={this.handleClick} disabled={this.getValidationName() === 'error' || this.getValidationVacation() === 'error' || this.getValidationDate() === 'error' || this.getValidationSalary() === 'error'}>Add Employee</Button>
+            <Button onClick={this.handleClick} disabled={this.getValidationName() === 'error' || this.getValidationVacation() === 'error' || this.getValidationDate() === 'error' || this.getValidationSalary() === 'error'}>Correct Employee Data</Button>
           </Col>
         </FormGroup>
       </Form>
@@ -129,7 +126,13 @@ class InputFormCorrect extends Component {
 
 InputFormCorrect.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  indexval: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  indexval: PropTypes.number.isRequired,
+  contacts: PropTypes.array.isRequired,
 };
 
-export default connect()(InputFormCorrect);
+const MapStateToProps = state => ({
+  contacts: state,
+});
+
+
+export default connect(MapStateToProps)(InputFormCorrect);

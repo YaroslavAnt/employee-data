@@ -15,13 +15,17 @@ class PaginationComponent extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { currentPage, countOfItems, contacts } = this.props;
     const countOfPages = Math.ceil(contacts.length / countOfItems);
     const items = [];
     for (let number = 1; number <= countOfPages; number++) {
       items.push(
-        <Pagination.Item active={number === currentPage} onClick={this.handleClick} name={number}>
+        <Pagination.Item
+          active={number === currentPage}
+          onClick={this.handleClick}
+          name={number}
+          key={number}
+        >
           {number}
         </Pagination.Item>,
       );

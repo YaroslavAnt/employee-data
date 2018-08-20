@@ -28,6 +28,7 @@ class ContactList extends Component {
   displayContacts(input) {
     this.setState({
       searchVal: input,
+      currentPage: 1,
     });
   }
 
@@ -56,7 +57,7 @@ class ContactList extends Component {
     });
   }
 
-  render() {
+  render() {    
     const { contacts } = this.props;
     const { 
       searchVal, show, indexVal, currentPage, countOfItems, 
@@ -71,17 +72,17 @@ class ContactList extends Component {
               <th>Name</th>
               <th>Date Of Birth</th>
               <th>Vacation</th>
-              <th>Salery</th>
+              <th>Salary</th>
               <th>Controlls</th>
             </tr>
           </thead>
           <tbody>
             {contacts
-              .filter(el => (searchVal ? el.name.indexOf(searchVal) !== -1 : el))
+              .filter(el => (searchVal ? el.name.toLowerCase().indexOf(searchVal.toLowerCase()) !== -1 : el))
               .slice((currentPage - 1) * countOfItems, (currentPage - 1) * countOfItems + countOfItems)
               .map((contact, index) => (
-                <tr key={contact.name}>
-                  <td>{index + 1}</td>
+                <tr key={JSON.stringify(contact)}>
+                  <td>{(currentPage - 1) * countOfItems + index + 1}</td>
                   <td>{contact.name}</td>
                   <td>{contact.dateOfBirth}</td>
                   <td>{contact.vacation}</td>
@@ -98,8 +99,12 @@ class ContactList extends Component {
               ))}
           </tbody>
         </Table>
-        <ModalWindowCorrect onHide={this.handleHide} visible={show} indexval={indexVal} />
-        <PaginationComponent onChangePage={this.handleChangePage} currentPage={currentPage} countOfItems={countOfItems} />
+        <ModalWindowCorrect onHide={this.handleHide} visible={show} indexval={indexVal}  />
+        <PaginationComponent 
+          onChangePage={this.handleChangePage} 
+          currentPage={currentPage} 
+          countOfItems={countOfItems} 
+        />
       </div>
     );
   }

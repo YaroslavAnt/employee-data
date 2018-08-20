@@ -5,9 +5,7 @@ import {
   Form, FormGroup, Col, FormControl, Button, 
 } from '../../node_modules/react-bootstrap';
 import 'react-day-picker/lib/style.css';
-import { addContact } from '../redux/configureReducer';
- 
-import 'react-datepicker/dist/react-datepicker.css';
+import { addContact } from '../redux/configureReducer'; 
 
 class InputForm extends Component {
   constructor(props) {
@@ -49,13 +47,10 @@ class InputForm extends Component {
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
-    });   
-    console.log(this.state);    
+    });    
   }
  
-  handleClick(event) {
-    console.log(this.state);
-    
+  handleClick(event) {    
     const { dispatch } = this.props;
     event.preventDefault();
     dispatch(addContact(this.state));
@@ -84,6 +79,7 @@ class InputForm extends Component {
           <Col sm={2}>Date Of Birth</Col>
           <Col sm={10}>
             <input type="date" onChange={this.handleChange} name="dateOfBirth" value={dateOfBirth} />
+            
           </Col>
         </FormGroup>
 

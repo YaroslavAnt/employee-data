@@ -6,8 +6,6 @@ import ModalWindow from './ModalWindow';
 
 class Root extends Component {
   render() {
-    console.log(this.props);
-
     return (
       <div className="App">
         <ContactList />

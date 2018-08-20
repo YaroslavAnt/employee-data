@@ -12,6 +12,7 @@ module.exports = {
     'implicit-arrow-linebreak': 0,
     'no-plusplus': 0,
     'react/jsx-no-bind': 1,
+    'max-len': 0,
   },
   globals: {
     window: true,

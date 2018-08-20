@@ -1,5 +1,4 @@
 import { createStore } from 'redux';
-import ContactList from './mock';
 import { loadState, saveState } from './localStorage';
 
 const ADD = 'ADD';
@@ -21,7 +20,7 @@ export const correctContact = (index, contact) => ({
   index: +index,
 });
 
-const contactReducer = (state = ContactList(), action) => {
+const contactReducer = (state = [], action) => {
   switch (action.type) {
     case ADD:
       return [...state, action.payload];
@@ -30,7 +29,15 @@ const contactReducer = (state = ContactList(), action) => {
       return [...state].filter(el => el.name !== action.payload);
 
     case CORRECT:
-      return [...state].filter(el => el !== state.splice(action.index, 1, action.contact));
+      console.log(
+        [...state].filter(
+          el => el !== state.splice(action.index, 1, action.contact),
+        ),
+      );
+
+      return [...state].filter(
+        el => el !== state.splice(action.index, 1, action.contact),
+      );
 
     default:
       return state;
